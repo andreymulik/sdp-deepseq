@@ -26,6 +26,9 @@ import SDP.Bytes
 import SDP.Unrolled
 import SDP.ByteList
 
+import SDP.Internal.SArray
+import SDP.Internal.SBytes
+
 default ()
 
 --------------------------------------------------------------------------------
@@ -41,5 +44,7 @@ instance (NFData i, NFData e) => NFData (Array i e)
 instance (NFData i, NFData e) => NFData (Bytes i e)
 instance (NFData i, NFData e) => NFData (Unrolled i e)
 instance (NFData i, NFData e) => NFData (ByteList i e)
+
+
 
 
