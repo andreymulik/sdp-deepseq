@@ -1,4 +1,4 @@
-{-# LANGUAGE Trustworthy, MagicHash #-}
+{-# LANGUAGE Trustworthy, MagicHash, FlexibleInstances #-}
 
 {- |
     Module      :  Control.DeepSeq.SDP
@@ -26,8 +26,8 @@ import SDP.Bytes
 import SDP.Unrolled
 import SDP.ByteList
 
-import SDP.Internal.SArray
-import SDP.Internal.SBytes
+import SDP.Prim.SArray
+import SDP.Prim.SBytes
 
 default ()
 
