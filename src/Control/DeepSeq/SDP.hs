@@ -1,4 +1,4 @@
-{-# LANGUAGE Trustworthy, MagicHash, FlexibleInstances #-}
+{-# LANGUAGE Safe, MagicHash, FlexibleInstances #-}
 
 {- |
     Module      :  Control.DeepSeq.SDP
