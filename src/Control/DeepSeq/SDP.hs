@@ -19,15 +19,12 @@ where
 import Prelude ()
 import SDP.SafePrelude
 
-import Control.DeepSeq
-
-import SDP.Array
-import SDP.Bytes
-import SDP.Unrolled
-import SDP.ByteList
-
+import SDP.Templates.AnyChunks
+import SDP.Templates.AnyBorder
 import SDP.Prim.SArray
 import SDP.Prim.SBytes
+
+import Control.DeepSeq
 
 default ()
 
@@ -35,16 +32,14 @@ default ()
 
 {- NFData instances. -}
 
-instance (NFData e) => NFData (Unlist  e)
-instance (NFData e) => NFData (Ublist  e)
-instance (NFData e) => NFData (SArray# e) where rnf = rnf . listL
+instance (NFData e) => NFData (SArray# e) where rnf = o_foldr' deepseq ()
 instance (NFData e) => NFData (SBytes# e) where rnf = rwhnf
 
-instance (NFData i, NFData e) => NFData (Array i e)
-instance (NFData i, NFData e) => NFData (Bytes i e)
-instance (NFData i, NFData e) => NFData (Unrolled i e)
-instance (NFData i, NFData e) => NFData (ByteList i e)
+instance (NFData i, NFData (rep e)) => NFData (AnyBorder rep i e)
+  where
+    rnf (AnyBorder l u rep) = l `deepseq` u `deepseq` rnf rep
 
-
-
+instance (NFData (rep e)) => NFData (AnyChunks rep e)
+  where
+    rnf = foldr' deepseq () . toChunks
 
