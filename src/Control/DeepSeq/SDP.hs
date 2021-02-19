@@ -7,7 +7,7 @@
     Maintainer  :  work.a.mulik@gmail.com
     Portability :  portable
     
-    @Control.DeepSeq.SDP@ contains 'NFData' instances for SDP types.
+    @Control.DeepSeq.SDP@ contains 'NFData' instances for @sdp@ types.
 -}
 module Control.DeepSeq.SDP
 (
@@ -42,4 +42,24 @@ instance (NFData i, NFData (rep e)) => NFData (AnyBorder rep i e)
 instance (NFData (rep e)) => NFData (AnyChunks rep e)
   where
     rnf = foldr' deepseq () . toChunks
+
+--------------------------------------------------------------------------------
+
+{- NFData1 and NFData2 instances. -}
+
+instance NFData1 SArray# where liftRnf rnf' = o_foldr' (seq . rnf') ()
+
+instance (NFData i, NFData1 rep) => NFData1 (AnyBorder rep i)
+  where
+    liftRnf rnf' (AnyBorder l u rep) = l `deepseq` u `deepseq` liftRnf rnf' rep
+
+instance (NFData1 rep) => NFData1 (AnyChunks rep)
+  where
+    liftRnf rnf' = foldr' (seq . liftRnf rnf') () . toChunks
+
+instance (NFData1 rep) => NFData2 (AnyBorder rep)
+  where
+    liftRnf2 rnf' rnf'' (AnyBorder l u rep) = rnf' l `seq` rnf' u `seq` liftRnf rnf'' rep
+
+
 
