@@ -1,4 +1,4 @@
-{-# LANGUAGE Safe, MagicHash, FlexibleInstances #-}
+{-# LANGUAGE Safe, CPP, MagicHash, FlexibleInstances #-}
 
 {- |
     Module      :  Control.DeepSeq.SDP
@@ -33,7 +33,7 @@ default ()
 {- NFData instances. -}
 
 instance (NFData e) => NFData (SArray# e) where rnf = o_foldr' deepseq ()
-instance (NFData e) => NFData (SBytes# e) where rnf = rwhnf
+instance (NFData e) => NFData (SBytes# e) where rnf = flip seq () -- rwhnf
 
 instance (NFData i, NFData (rep e)) => NFData (AnyBorder rep i e)
   where
@@ -47,6 +47,7 @@ instance (NFData (rep e)) => NFData (AnyChunks rep e)
 
 {- NFData1 and NFData2 instances. -}
 
+#if MIN_VERSION_deepseq(1,4,3)
 instance NFData1 SArray# where liftRnf rnf' = o_foldr' (seq . rnf') ()
 
 instance (NFData i, NFData1 rep) => NFData1 (AnyBorder rep i)
@@ -60,6 +61,5 @@ instance (NFData1 rep) => NFData1 (AnyChunks rep)
 instance (NFData1 rep) => NFData2 (AnyBorder rep)
   where
     liftRnf2 rnf' rnf'' (AnyBorder l u rep) = rnf' l `seq` rnf' u `seq` liftRnf rnf'' rep
-
-
+#endif
 
