@@ -1,5 +1,5 @@
 name:          sdp-deepseq
-version:       0.2
+version:       0.2.0.1
 category:      Data Structures
 
 synopsis:      DeepSeq SDP extension.
@@ -17,6 +17,8 @@ build-type:    Simple
 cabal-version: >=1.10
 
 tested-with:
+  -- lts-7.0
+  GHC == 8.0.1,
   -- lts-7.24
   GHC == 8.0.1,
   -- lts-9.21
@@ -25,8 +27,16 @@ tested-with:
   GHC == 8.2.2,
   -- lts-12.26
   GHC == 8.4.4,
+  -- lts-14.27
+  GHC == 8.6.5,
   -- lts-18.8
-  GHC == 8.10.6
+  GHC == 8.10.6,
+  -- lts-18.24
+  GHC == 8.10.7,
+  -- lts-19.11
+  GHC == 9.0.2,
+  -- nightly-2022-06-12
+  GHC == 9.2.3
 
 source-repository head
   type: git
